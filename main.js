@@ -21,6 +21,8 @@ const awwSound = document.getElementById("awwSound");
 const musicBtn = document.getElementById("music");
 const themeBtn = document.getElementById("theme");
 
+document.getElementById("currentYear").textContent = new Date().getFullYear();
+
 /* =========================
    STATE
 ========================= */
@@ -42,15 +44,18 @@ function updateMusicIcon() {
    PLAY MUSIC WITH ERROR HANDLING
 ========================= */
 function playMusic() {
-  music.play().then(() => {
-    musicOn = true;
-    localStorage.setItem("musicOn", "true");
-    updateMusicIcon();
-  }).catch(err => {
-    console.log("Music blocked:", err);
-    musicOn = false;
-    updateMusicIcon();
-  });
+  music
+    .play()
+    .then(() => {
+      musicOn = true;
+      localStorage.setItem("musicOn", "true");
+      updateMusicIcon();
+    })
+    .catch((err) => {
+      console.log("Music blocked:", err);
+      musicOn = false;
+      updateMusicIcon();
+    });
 }
 
 /* =========================
@@ -95,7 +100,7 @@ const stepsData = [
   { text: "Itna bhaav mat khao 😠", image: "assets/attitude.gif" },
   { text: "Sach me nahi? 😭", image: "assets/cry.gif" },
   { text: "Cute ho yaar tum 😍", image: "assets/cute.gif" },
-  { text: "Last chance ❤️", image: "assets/loveme.gif" }
+  { text: "Last chance ❤️", image: "assets/loveme.gif" },
 ];
 
 noBtn.addEventListener("click", () => {
@@ -124,7 +129,7 @@ noBtn.addEventListener("touchstart", moveNoButton);
 yesBtn.addEventListener("click", acceptLove);
 
 function acceptLove() {
-  text.innerText = "Mujhe pata tha tum maan jaogi ❤️";
+  text.innerText = "Mujhe pata tha tum maan jaoge ❤️";
   img.style.backgroundImage = "url(assets/thanks.gif)";
 
   yesBtn.style.display = "none";
@@ -160,7 +165,7 @@ cover.addEventListener("click", () => {
 closePopup.addEventListener("click", () => {
   popup.style.display = "none";
   awwSound.currentTime = 0;
-  awwSound.play().catch(err => console.log("aww sound error:", err));
+  awwSound.play().catch((err) => console.log("aww sound error:", err));
 });
 
 /* =========================
@@ -200,7 +205,7 @@ function confettiBurst() {
 ========================= */
 shareBtn.addEventListener("click", () => {
   const msg = encodeURIComponent(
-    "Someone just said YES to love ❤️😍\nTry this cute page 👉 "
+    "Someone just said YES to love ❤️😍\nTry this cute page 👉 ",
   );
   const url = encodeURIComponent(window.location.href);
   window.open(`https://wa.me/?text=${msg}${url}`, "_blank");
@@ -220,11 +225,29 @@ themeBtn.addEventListener("click", () => {
 /* =========================
    SCREENSHOT
 ========================= */
-saveShot.addEventListener("click", () => {
-  html2canvas(card).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "love-memory.png";
-    link.href = canvas.toDataURL();
-    link.click();
+
+document.getElementById("saveShot").addEventListener("click", async () => {
+  const card = document.getElementById("memoryCard");
+
+  // save original styles
+  const originalShadow = card.style.boxShadow;
+  const originalBg = card.style.background;
+
+  // temporary export styles
+  card.style.boxShadow = "none";
+  card.style.background = "#fff0f5"; // solid background
+
+  const canvas = await html2canvas(card, {
+    scale: 2,
+    useCORS: true,
   });
+
+  // restore styles
+  card.style.boxShadow = originalShadow;
+  card.style.background = originalBg;
+
+  const link = document.createElement("a");
+  link.download = "Our_First_Valentine.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 });
