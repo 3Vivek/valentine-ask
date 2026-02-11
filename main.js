@@ -226,28 +226,37 @@ themeBtn.addEventListener("click", () => {
    SCREENSHOT
 ========================= */
 
-document.getElementById("saveShot").addEventListener("click", async () => {
-  const card = document.getElementById("memoryCard");
+// document.getElementById("saveShot").addEventListener("click", async () => {
+//   const card = document.getElementById("memoryCard");
 
-  // save original styles
-  const originalShadow = card.style.boxShadow;
-  const originalBg = card.style.background;
+//   // save original styles
+//   const originalShadow = card.style.boxShadow;
+//   const originalBg = card.style.background;
 
-  // temporary export styles
-  card.style.boxShadow = "none";
-  card.style.background = "#fff0f5"; // solid background
+//   // temporary export styles
+//   card.style.boxShadow = "none";
+//   card.style.background = "#fff0f5"; // solid background
 
-  const canvas = await html2canvas(card, {
-    scale: 2,
-    useCORS: true,
-  });
+//   const canvas = await html2canvas(card, {
+//     scale: 2,
+//     useCORS: true,
+//   });
 
-  // restore styles
-  card.style.boxShadow = originalShadow;
-  card.style.background = originalBg;
+//   // restore styles
+//   card.style.boxShadow = originalShadow;
+//   card.style.background = originalBg;
 
+//   const link = document.createElement("a");
+//   link.download = "Our_First_Valentine.png";
+//   link.href = canvas.toDataURL("image/png");
+//   link.click();
+// });
+
+document.getElementById("saveShot").addEventListener("click", () => {
   const link = document.createElement("a");
-  link.download = "Our_First_Valentine.png";
-  link.href = canvas.toDataURL("image/png");
+  link.href = "assets/download.png";   // image path
+  link.download = "our-memory.png";    // downloaded file name
+  document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
 });
